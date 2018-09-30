@@ -8,15 +8,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.haraevanton.tasks09.R;
 import com.haraevanton.tasks09.ui.adapter.MainAdapter;
-import com.haraevanton.tasks09.mvp.model.Task;
+import com.haraevanton.tasks09.room.Task;
 import com.haraevanton.tasks09.mvp.presenters.MainActivityPresenter;
 import com.haraevanton.tasks09.mvp.views.MainActivityView;
 
@@ -86,6 +84,15 @@ public class MainActivity extends MvpAppCompatActivity implements MainActivityVi
         editorTaskName.setText(task.getTaskName());
         editorTaskDescription.setText(task.getTaskDescription());
         relativeLayout.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void showEmptyEditor() {
+        editorTaskStatus.setBackgroundResource(R.drawable.ic_task_inactive);
+        editorTaskName.setText(" ");
+        editorTaskDescription.setText(" ");
+        relativeLayout.setVisibility(View.VISIBLE);
+        mainActivityPresenter.updateCurrentTask(new Task(editorTaskName.getText().toString(), editorTaskDescription.getText().toString(), R.drawable.ic_task_inactive));
     }
 
     @OnClick(R.id.editor_task_status)

@@ -1,22 +1,17 @@
 package com.haraevanton.tasks09.ui.adapter;
 
-import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.haraevanton.tasks09.R;
-import com.haraevanton.tasks09.mvp.model.Task;
+import com.haraevanton.tasks09.room.Task;
 import com.haraevanton.tasks09.mvp.presenters.MainActivityPresenter;
-import com.haraevanton.tasks09.ui.MainActivity;
 
 import java.util.List;
 
@@ -90,9 +85,9 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.TaskViewHolder
         }
 
         @OnClick(R.id.task_name)
-        void onTaskNameCLick(TextView taskName){
-            for (Task task: tasks) {
-                if (taskName.getText() == task.getTaskName()){
+        void onTaskNameClick(TextView taskName){
+            for (Task task : tasks) {
+                if (taskName.getText().equals(task.getTaskName())){
                     mainActivityPresenter.onTaskNameClick(task);
                     Log.i("task1", "onTaskNameCLick");
                 }

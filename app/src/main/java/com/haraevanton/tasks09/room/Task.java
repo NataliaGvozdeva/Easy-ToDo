@@ -1,32 +1,37 @@
-package com.haraevanton.tasks09.mvp.model;
+package com.haraevanton.tasks09.room;
 
-import com.haraevanton.tasks09.R;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
 
 import java.util.UUID;
 
+@Entity
 public class Task {
 
-    private UUID taskId;
+    @PrimaryKey
+    @NonNull
+    private String id;
+
     private String taskName;
+
     private String taskDescription;
+
     private int taskStatus;
 
-    public Task(String taskName, String taskDescription){
-        taskId = UUID.randomUUID();
-        this.taskName = taskName;
-        this.taskDescription = taskDescription;
-        taskStatus = R.drawable.ic_task_active;
-    }
-
     public Task(String taskName, String taskDescription, int taskStatus){
-        taskId = UUID.randomUUID();
         this.taskName = taskName;
         this.taskDescription = taskDescription;
         this.taskStatus = taskStatus;
+        id = UUID.randomUUID().toString();
     }
 
-    public UUID getTaskId() {
-        return taskId;
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getTaskName() {
