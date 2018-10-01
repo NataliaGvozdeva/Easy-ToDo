@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.haraevanton.tasks09.R;
@@ -50,8 +51,24 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.TaskViewHolder
         return tasks.size();
     }
 
+    public void removeItem(int position){
+//        tasks.remove(position);
+        mainActivityPresenter.removeTask(tasks.get(position).getId());
+        notifyItemRemoved(position);
+    }
+
+    public void restoreItem(Task task, int position){
+//        tasks.add(position, task);
+        mainActivityPresenter.addTask(position, task);
+        notifyItemInserted(position);
+    }
+
     public static class TaskViewHolder extends RecyclerView.ViewHolder {
 
+        @BindView(R.id.view_background)
+        RelativeLayout viewBackground;
+        @BindView(R.id.view_foreground)
+        RelativeLayout viewForeground;
         @BindView(R.id.task_name)
         TextView taskName;
         @BindView(R.id.task_status)

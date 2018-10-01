@@ -23,4 +23,7 @@ public interface TaskDao {
     @Query("SELECT * FROM task")
     List<Task> getAllTasks();
 
+    @Query("DELETE FROM task")
+    void deleteAll();
+
 }

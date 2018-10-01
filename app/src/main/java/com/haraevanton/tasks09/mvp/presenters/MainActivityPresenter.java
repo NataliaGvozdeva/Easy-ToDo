@@ -73,4 +73,13 @@ public class MainActivityPresenter extends MvpPresenter<MainActivityView> {
     public void onActionBtnClick() {
         getViewState().showEmptyEditor();
     }
+
+    public void removeTask(String id){
+        Log.i("tryRemove", String.valueOf(taskRepository.isHaveTask(id)));
+        taskRepository.removeTask(taskRepository.getTask(id));
+    }
+
+    public void addTask(int position, Task task){
+        taskRepository.refreshTasks(position, task);
+    }
 }
