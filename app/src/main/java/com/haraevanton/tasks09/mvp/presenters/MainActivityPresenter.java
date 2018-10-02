@@ -6,7 +6,6 @@ import android.widget.ImageButton;
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 import com.haraevanton.tasks09.R;
-import com.haraevanton.tasks09.room.AppDatabase;
 import com.haraevanton.tasks09.room.Task;
 import com.haraevanton.tasks09.mvp.model.TaskRepository;
 import com.haraevanton.tasks09.mvp.views.MainActivityView;
@@ -16,7 +15,6 @@ public class MainActivityPresenter extends MvpPresenter<MainActivityView> {
 
     private Task editedTask;
     private int currentTaskStatus;
-    private AppDatabase db;
     private TaskRepository taskRepository;
 
     public MainActivityPresenter() {
@@ -42,11 +40,9 @@ public class MainActivityPresenter extends MvpPresenter<MainActivityView> {
         if (this.editedTask != null){
             if (!this.editedTask.getId().equals(editedTask.getId())) {
                 this.editedTask = editedTask;
-                Log.i("taskOP", "change editedTask");
             }
         }else {
             this.editedTask = editedTask;
-            Log.i("taskOP", "change editedTask");
         }
 
         getViewState().showTaskEditor(editedTask);
@@ -57,16 +53,16 @@ public class MainActivityPresenter extends MvpPresenter<MainActivityView> {
         this.editedTask = editedTask;
     }
 
-    public void onEditorApplyClick(ImageButton view, String taskName, String taskDescription) {
-        editedTask.setTaskName(taskName);
-        editedTask.setTaskDescription(taskDescription);
-        editedTask.setTaskStatus(currentTaskStatus);
-        if (!taskRepository.isHaveTask(editedTask.getId())) {
-            taskRepository.addTask(editedTask);
-            Log.i("taskOP", "add" + editedTask.getTaskName());
-        } else {
-            taskRepository.updateTask(taskRepository.getTask(editedTask.getId()));
-            Log.i("taskOP", "update" + editedTask.getTaskName());
+    public void onEditorApplyClick(String taskName, String taskDescription) {
+        if (!taskName.isEmpty()) {
+            editedTask.setTaskName(taskName);
+            editedTask.setTaskDescription(taskDescription);
+            editedTask.setTaskStatus(currentTaskStatus);
+            if (!taskRepository.isHaveTask(editedTask.getId())) {
+                taskRepository.addTask(editedTask);
+            } else {
+                taskRepository.updateTask(taskRepository.getTask(editedTask.getId()));
+            }
         }
     }
 
@@ -75,7 +71,6 @@ public class MainActivityPresenter extends MvpPresenter<MainActivityView> {
     }
 
     public void removeTask(String id){
-        Log.i("tryRemove", String.valueOf(taskRepository.isHaveTask(id)));
         taskRepository.removeTask(taskRepository.getTask(id));
     }
 

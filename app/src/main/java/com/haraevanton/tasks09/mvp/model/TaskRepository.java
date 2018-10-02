@@ -1,7 +1,6 @@
 package com.haraevanton.tasks09.mvp.model;
 
 import android.arch.persistence.room.Room;
-import android.content.Context;
 
 import com.haraevanton.tasks09.App;
 import com.haraevanton.tasks09.room.AppDatabase;
@@ -15,7 +14,6 @@ public class TaskRepository {
     private static TaskRepository taskRepository;
 
     private List<Task> tasks;
-    private Context context;
     private AppDatabase db;
 
     public static TaskRepository get() {
@@ -27,7 +25,6 @@ public class TaskRepository {
     }
 
     private TaskRepository() {
-        context = App.getContext();
         db = Room.databaseBuilder(App.getContext(), AppDatabase.class, "taskdb")
                 .allowMainThreadQueries()
                 .build();
@@ -44,11 +41,6 @@ public class TaskRepository {
     public void addTask(Task t) {
         db.taskDao().insertAll(t);
         tasks.add(0, t);
-    }
-
-    public void addTask(int position, Task t) {
-        db.taskDao().insertAll(t);
-        tasks.add(position, t);
     }
 
     public void updateTask(Task t) {

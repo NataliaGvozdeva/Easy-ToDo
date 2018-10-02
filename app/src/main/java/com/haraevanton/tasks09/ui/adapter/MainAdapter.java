@@ -52,13 +52,11 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.TaskViewHolder
     }
 
     public void removeItem(int position){
-//        tasks.remove(position);
         mainActivityPresenter.removeTask(tasks.get(position).getId());
         notifyItemRemoved(position);
     }
 
     public void restoreItem(Task task, int position){
-//        tasks.add(position, task);
         mainActivityPresenter.addTask(position, task);
         notifyItemInserted(position);
     }

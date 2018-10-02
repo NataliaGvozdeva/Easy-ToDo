@@ -98,7 +98,7 @@ public class MainActivity extends MvpAppCompatActivity implements MainActivityVi
 
     @Override
     public void showEmptyEditor() {
-        editorTaskStatus.setBackgroundResource(R.drawable.ic_task_inactive);
+        editorTaskStatus.setBackgroundResource(R.drawable.ic_task_active);
         editorTaskName.setText("");
         editorTaskDescription.setText("");
         relativeLayout.setVisibility(View.VISIBLE);
@@ -111,20 +111,20 @@ public class MainActivity extends MvpAppCompatActivity implements MainActivityVi
     }
 
     @OnClick(R.id.editor_cancel)
-    public void onEditorCancelClick(ImageButton view) {
+    public void onEditorCancelClick() {
         relativeLayout.setVisibility(View.GONE);
         adapter.notifyDataSetChanged();
     }
 
     @OnClick(R.id.editor_apply)
-    public void onEditorApplyClick(ImageButton view) {
-        mainActivityPresenter.onEditorApplyClick(view, editorTaskName.getText().toString(), editorTaskDescription.getText().toString());
+    public void onEditorApplyClick() {
+        mainActivityPresenter.onEditorApplyClick(editorTaskName.getText().toString(), editorTaskDescription.getText().toString());
         relativeLayout.setVisibility(View.GONE);
         adapter.notifyDataSetChanged();
     }
 
     @OnClick(R.id.fab)
-    public void onActionBtnClick(FloatingActionButton fab){
+    public void onActionBtnClick(){
         mainActivityPresenter.onActionBtnClick();
     }
 
