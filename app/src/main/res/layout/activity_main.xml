@@ -24,7 +24,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_toLeftOf="@id/editor_task_status"
-                android:text="Title"
+                android:text="@string/editor_txt_title"
                 android:textColor="@color/colorAccent"
                 android:textSize="15sp" />
 
@@ -34,14 +34,14 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/editor_edittext_title"
                 android:layout_toLeftOf="@id/editor_task_status"
-                android:hint="example" />
+                android:hint="@string/editor_edtxt_name_hint" />
 
             <TextView
                 android:id="@+id/editor_edittext_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/editor_task_name"
-                android:text="Description"
+                android:text="@string/editor_txt_description"
                 android:textColor="@color/colorAccent"
                 android:textSize="15sp" />
 
@@ -50,7 +50,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/editor_edittext_description"
-                android:hint="description example" />
+                android:hint="@string/editor_edtxt_description_hint" />
 
             <ImageButton
                 android:id="@+id/editor_task_status"

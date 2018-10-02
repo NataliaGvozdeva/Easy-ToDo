@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">Tasks09</string>
+
+
+    <!--activity_main-->
+    <string name="editor_txt_title">Title</string>
+    <string name="editor_edtxt_name_hint">Task title</string>
+    <string name="editor_txt_description">Description</string>
+    <string name="editor_edtxt_description_hint">Task description</string>
+    <string name="snackbar">%s removed from list!</string>
+    <string name="undo">UNDO</string>
+
+    <!--cardview-->
+    <string name="background_txt_delete">DELETE</string>
+
 </resources>

@@ -99,8 +99,8 @@ public class MainActivity extends MvpAppCompatActivity implements MainActivityVi
     @Override
     public void showEmptyEditor() {
         editorTaskStatus.setBackgroundResource(R.drawable.ic_task_inactive);
-        editorTaskName.setText(" ");
-        editorTaskDescription.setText(" ");
+        editorTaskName.setText("");
+        editorTaskDescription.setText("");
         relativeLayout.setVisibility(View.VISIBLE);
         mainActivityPresenter.updateCurrentTask(new Task(editorTaskName.getText().toString(), editorTaskDescription.getText().toString(), R.drawable.ic_task_inactive));
     }
@@ -131,24 +131,19 @@ public class MainActivity extends MvpAppCompatActivity implements MainActivityVi
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
         if (viewHolder instanceof MainAdapter.TaskViewHolder) {
-            // get the removed item name to display it in snack bar
             String name = TaskRepository.get().getTasks().get(viewHolder.getAdapterPosition()).getTaskName();
 
-            // backup of removed item for undo purpose
             final Task deletedItem = TaskRepository.get().getTasks().get(viewHolder.getAdapterPosition());
             final int deletedIndex = viewHolder.getAdapterPosition();
 
-            // remove the item from recycler view
             adapter.removeItem(viewHolder.getAdapterPosition());
 
-            // showing snack bar with Undo option
-            Snackbar snackbar = Snackbar
-                    .make(coordinatorLayout, name + " removed from cart!", Snackbar.LENGTH_LONG);
-            snackbar.setAction("UNDO", new View.OnClickListener() {
+//            Snackbar snackbar = Snackbar.make(coordinatorLayout, name + " removed from cart!", Snackbar.LENGTH_LONG);
+            Snackbar snackbar = Snackbar.make(coordinatorLayout, getString(R.string.snackbar, name), Snackbar.LENGTH_LONG);
+            snackbar.setAction(getString(R.string.undo), new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 
-                    // undo is selected, restore the deleted item
                     adapter.restoreItem(deletedItem, deletedIndex);
                 }
             });
