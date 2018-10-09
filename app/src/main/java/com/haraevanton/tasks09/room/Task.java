@@ -2,8 +2,11 @@ package com.haraevanton.tasks09.room;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
+import android.arch.persistence.room.TypeConverters;
 import android.support.annotation.NonNull;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.UUID;
 
 @Entity
@@ -12,12 +15,11 @@ public class Task {
     @PrimaryKey
     @NonNull
     private String id;
-
     private String taskName;
-
     private String taskDescription;
-
     private int taskStatus;
+    private boolean isSwitched;
+    private Calendar notifyDate;
 
     public Task(String taskName, String taskDescription, int taskStatus){
         this.taskName = taskName;
@@ -56,5 +58,21 @@ public class Task {
 
     public void setTaskStatus(int taskStatus) {
         this.taskStatus = taskStatus;
+    }
+
+    public boolean isSwitched() {
+        return isSwitched;
+    }
+
+    public void setSwitched(boolean switched) {
+        isSwitched = switched;
+    }
+
+    public Calendar getNotifyDate() {
+        return notifyDate;
+    }
+
+    public void setNotifyDate(Calendar notifyDate) {
+        this.notifyDate = notifyDate;
     }
 }

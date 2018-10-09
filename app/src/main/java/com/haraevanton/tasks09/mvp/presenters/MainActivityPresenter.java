@@ -10,6 +10,8 @@ import com.haraevanton.tasks09.room.Task;
 import com.haraevanton.tasks09.mvp.model.TaskRepository;
 import com.haraevanton.tasks09.mvp.views.MainActivityView;
 
+import java.util.Calendar;
+
 @InjectViewState
 public class MainActivityPresenter extends MvpPresenter<MainActivityView> {
 
@@ -53,11 +55,19 @@ public class MainActivityPresenter extends MvpPresenter<MainActivityView> {
         this.editedTask = editedTask;
     }
 
-    public void onEditorApplyClick(String taskName, String taskDescription) {
+    public void onEditorApplyClick(String taskName, String taskDescription, boolean isSwitched, Calendar notifyCalendar) {
         if (!taskName.isEmpty()) {
             editedTask.setTaskName(taskName);
             editedTask.setTaskDescription(taskDescription);
             editedTask.setTaskStatus(currentTaskStatus);
+            editedTask.setSwitched(isSwitched);
+            if (isSwitched){
+                editedTask.setNotifyDate(notifyCalendar);
+                getViewState().setNotification(editedTask);
+            } else {
+                editedTask.setNotifyDate(Calendar.getInstance());
+                getViewState().cancelNotification(editedTask);
+            }
             if (!taskRepository.isHaveTask(editedTask.getId())) {
                 taskRepository.addTask(editedTask);
             } else {
