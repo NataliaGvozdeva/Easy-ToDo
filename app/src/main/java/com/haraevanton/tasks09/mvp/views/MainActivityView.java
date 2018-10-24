@@ -16,4 +16,6 @@ public interface MainActivityView extends MvpView {
     void setNotification(Task task);
 
     void cancelNotification(Task task);
+
+    void updateWidget();
 }

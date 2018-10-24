@@ -91,25 +91,16 @@
                 android:layout_toLeftOf="@+id/btn_date"
                 android:layout_alignBottom="@+id/btn_date"
                 android:gravity="center"
-                android:text="Add notify" />
+                android:text="@string/editor_switch" />
 
             <Button
                 android:id="@+id/btn_date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/editor_task_description"
-                android:layout_toLeftOf="@+id/btn_time"
-                android:enabled="false"
-                android:text="@string/editor_btn_date"/>
-
-            <Button
-                android:id="@+id/btn_time"
-                android:layout_width="wrap_content"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/editor_task_description"
                 android:layout_alignParentRight="true"
                 android:enabled="false"
-                android:text="@string/editor_btn_time"/>
+                android:text="@string/editor_btn_date"/>
 
         </RelativeLayout>
 

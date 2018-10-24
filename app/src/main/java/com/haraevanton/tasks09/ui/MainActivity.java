@@ -5,6 +5,8 @@ import android.app.DatePickerDialog;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.TimePickerDialog;
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -37,22 +39,21 @@ import com.haraevanton.tasks09.room.Task;
 import com.haraevanton.tasks09.mvp.presenters.MainActivityPresenter;
 import com.haraevanton.tasks09.mvp.views.MainActivityView;
 import com.haraevanton.tasks09.ui.adapter.RecyclerItemTouchHelper;
+import com.haraevanton.tasks09.widget.WidgetProvider;
 
-import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 
-import static com.haraevanton.tasks09.App.getContext;
-
-public class MainActivity extends MvpAppCompatActivity implements MainActivityView, RecyclerItemTouchHelper.RecyclerItemTouchHelperListener {
+public class MainActivity extends MvpAppCompatActivity implements MainActivityView,
+        RecyclerItemTouchHelper.RecyclerItemTouchHelperListener {
 
     @InjectPresenter
     MainActivityPresenter mainActivityPresenter;
@@ -79,8 +80,6 @@ public class MainActivity extends MvpAppCompatActivity implements MainActivityVi
     Switch aSwitch;
     @BindView(R.id.btn_date)
     Button btnDate;
-    @BindView(R.id.btn_time)
-    Button btnTime;
 
     private MainAdapter adapter;
     private boolean isSwitched;
@@ -128,17 +127,20 @@ public class MainActivity extends MvpAppCompatActivity implements MainActivityVi
         editorTaskName.setText(task.getTaskName());
         editorTaskDescription.setText(task.getTaskDescription());
         aSwitch.setChecked(task.isSwitched());
+        isSwitched = task.isSwitched();
         btnDate.setEnabled(task.isSwitched());
-        btnTime.setEnabled(task.isSwitched());
-        notifyCalendar = Calendar.getInstance();
-        notifyCalendar.getTimeInMillis();
+        if (Calendar.getInstance().compareTo(task.getNotifyDate()) < 0) {
+            notifyCalendar = Calendar.getInstance();
+            notifyCalendar.getTimeInMillis();
+        } else {
+            notifyCalendar = task.getNotifyDate();
+        }
         if (task.isSwitched()) {
-            Log.i("whatswrong", String.valueOf(task.getNotifyDate().get(Calendar.DAY_OF_MONTH)));
-            btnDate.setText(task.getNotifyDate().get(Calendar.DAY_OF_MONTH) + "." + (task.getNotifyDate().get(Calendar.MONTH) + 1) + "." + task.getNotifyDate().get(Calendar.YEAR));
-            btnTime.setText(task.getNotifyDate().get(Calendar.HOUR_OF_DAY) + ":" + task.getNotifyDate().get(Calendar.MINUTE));
+            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm dd.MM.yyyy", Locale.ENGLISH);
+            String str = sdf.format(task.getNotifyDate().getTime());
+            btnDate.setText(str);
         } else {
             btnDate.setText(R.string.editor_btn_date);
-            btnTime.setText(R.string.editor_btn_time);
 
         }
         relativeLayout.setVisibility(View.VISIBLE);
@@ -153,8 +155,8 @@ public class MainActivity extends MvpAppCompatActivity implements MainActivityVi
         editorTaskName.setText("");
         editorTaskDescription.setText("");
         aSwitch.setChecked(false);
+        isSwitched = false;
         btnDate.setText(R.string.editor_btn_date);
-        btnTime.setText(R.string.editor_btn_time);
         relativeLayout.setVisibility(View.VISIBLE);
         btnApply.setVisibility(View.VISIBLE);
         btnCancel.setVisibility(View.VISIBLE);
@@ -176,7 +178,9 @@ public class MainActivity extends MvpAppCompatActivity implements MainActivityVi
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, task.getId().hashCode(), notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        alarmManager.set(AlarmManager.RTC_WAKEUP, task.getNotifyDate().getTimeInMillis(), pendingIntent);
+        if (alarmManager != null) {
+            alarmManager.set(AlarmManager.RTC_WAKEUP, task.getNotifyDate().getTimeInMillis(), pendingIntent);
+        }
     }
 
     @Override
@@ -187,8 +191,19 @@ public class MainActivity extends MvpAppCompatActivity implements MainActivityVi
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, task.getId().hashCode(), notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
         pendingIntent.cancel();
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        alarmManager.cancel(pendingIntent);
+        if (alarmManager != null) {
+            alarmManager.cancel(pendingIntent);
+        }
 
+    }
+
+    @Override
+    public void updateWidget() {
+        Intent intent = new Intent(this, WidgetProvider.class);
+        intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+        int[] ids = AppWidgetManager.getInstance(this).getAppWidgetIds(new ComponentName(this, WidgetProvider.class));
+        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
+        sendBroadcast(intent);
     }
 
     @OnClick(R.id.editor_task_status)
@@ -215,16 +230,14 @@ public class MainActivity extends MvpAppCompatActivity implements MainActivityVi
     }
 
     @OnClick(R.id.btn_date)
-    public void onBtnDateClick(Button button) {
+    public void onBtnDateClick() {
 
         DatePickerDialog.OnDateSetListener d = new DatePickerDialog.OnDateSetListener() {
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 notifyCalendar.set(Calendar.YEAR, year);
                 notifyCalendar.set(Calendar.MONTH, monthOfYear);
                 notifyCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                Log.i("btnDate", String.valueOf(dayOfMonth) + "." + String.valueOf(monthOfYear + 1) + "." + String.valueOf(year));
-                btnDate.setText(String.valueOf(dayOfMonth) + "." + String.valueOf(monthOfYear + 1) + "." + String.valueOf(year));
-//                setInitialDateTime();
+                onBtnTimeClick();
             }
         };
 
@@ -236,8 +249,7 @@ public class MainActivity extends MvpAppCompatActivity implements MainActivityVi
                 .show();
     }
 
-    @OnClick(R.id.btn_time)
-    public void onBtnTimeClick(Button button) {
+    public void onBtnTimeClick() {
 
         TimePickerDialog.OnTimeSetListener t = new TimePickerDialog.OnTimeSetListener() {
             @Override
@@ -245,9 +257,9 @@ public class MainActivity extends MvpAppCompatActivity implements MainActivityVi
                 notifyCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
                 notifyCalendar.set(Calendar.MINUTE, minute);
                 notifyCalendar.set(Calendar.SECOND, 0);
-                btnTime.setText(String.valueOf(hourOfDay) + ":" + String.valueOf(minute));
-                Log.i("dateinfo", String.valueOf(notifyCalendar.get(Calendar.DAY_OF_MONTH)) + "." + String.valueOf(notifyCalendar.get(Calendar.MONTH) + 1) + "." + String.valueOf(notifyCalendar.get(Calendar.YEAR)) + " " + String.valueOf(notifyCalendar.get(Calendar.HOUR_OF_DAY)) + ":" + String.valueOf(notifyCalendar.get(Calendar.MINUTE)));
-//                setInitialDateTime();
+                SimpleDateFormat sdf = new SimpleDateFormat("HH:mm dd.MM.yyyy", Locale.ENGLISH);
+                String str = sdf.format(notifyCalendar.getTime());
+                btnDate.setText(str);
             }
         };
 
@@ -266,38 +278,32 @@ public class MainActivity extends MvpAppCompatActivity implements MainActivityVi
     @OnCheckedChanged(R.id.switch1)
     public void onCheckedChanged(CompoundButton button, boolean isChecked) {
         isSwitched = isChecked;
-//        if (isChecked) {
-//            btnDate.setEnabled(true);
-//            btnTime.setEnabled(true);
-//        } else {
-//            btnDate.setEnabled(false);
-//            btnTime.setEnabled(false);
-//        }
         btnDate.setEnabled(isChecked);
-        btnTime.setEnabled(isChecked);
     }
 
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
         if (viewHolder instanceof MainAdapter.TaskViewHolder) {
-            String name = TaskRepository.get().getTasks().get(viewHolder.getAdapterPosition()).getTaskName();
+            try {
+                String name = TaskRepository.get().getTasks().get(viewHolder.getAdapterPosition()).getTaskName();
+                final Task deletedItem = TaskRepository.get().getTasks().get(viewHolder.getAdapterPosition());
+                final int deletedIndex = viewHolder.getAdapterPosition();
 
-            final Task deletedItem = TaskRepository.get().getTasks().get(viewHolder.getAdapterPosition());
-            final int deletedIndex = viewHolder.getAdapterPosition();
+                adapter.removeItem(viewHolder.getAdapterPosition());
 
-            adapter.removeItem(viewHolder.getAdapterPosition());
+                Snackbar snackbar = Snackbar.make(coordinatorLayout, getString(R.string.snackbar, name), Snackbar.LENGTH_LONG);
+                snackbar.setAction(getString(R.string.undo), new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
 
-//            Snackbar snackbar = Snackbar.make(coordinatorLayout, name + " removed from cart!", Snackbar.LENGTH_LONG);
-            Snackbar snackbar = Snackbar.make(coordinatorLayout, getString(R.string.snackbar, name), Snackbar.LENGTH_LONG);
-            snackbar.setAction(getString(R.string.undo), new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                    adapter.restoreItem(deletedItem, deletedIndex);
-                }
-            });
-            snackbar.setActionTextColor(Color.YELLOW);
-            snackbar.show();
+                        adapter.restoreItem(deletedItem, deletedIndex);
+                    }
+                });
+                snackbar.setActionTextColor(Color.YELLOW);
+                snackbar.show();
+            } catch (Exception e) {
+                Log.i("ExceptionSwiped", e.toString());
+            }
         }
     }
 }

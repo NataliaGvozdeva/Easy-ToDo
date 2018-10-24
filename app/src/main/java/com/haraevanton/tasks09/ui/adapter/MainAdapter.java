@@ -14,7 +14,10 @@ import com.haraevanton.tasks09.R;
 import com.haraevanton.tasks09.room.Task;
 import com.haraevanton.tasks09.mvp.presenters.MainActivityPresenter;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -43,6 +46,13 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.TaskViewHolder
         holder.taskName.setText(tasks.get(position).getTaskName());
         holder.taskStatus.setBackgroundResource(tasks.get(position).getTaskStatus());
         holder.description.setText(tasks.get(position).getTaskDescription());
+        if (tasks.get(position).isSwitched()){
+            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm dd.MM.yyyy", Locale.ENGLISH);
+            String str = sdf.format(tasks.get(position).getNotifyDate().getTime());
+            holder.notifyDate.setText(str);
+        } else {
+            holder.notifyDate.setText("");
+        }
         holder.bind(tasks);
     }
 
@@ -73,6 +83,8 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.TaskViewHolder
         ImageButton taskStatus;
         @BindView(R.id.description)
         TextView description;
+        @BindView(R.id.notify_date)
+        TextView notifyDate;
 
         private MainActivityPresenter mainActivityPresenter;
         private List<Task> tasks;

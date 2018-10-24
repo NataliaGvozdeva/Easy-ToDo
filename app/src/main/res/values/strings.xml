@@ -7,7 +7,8 @@
     <string name="editor_edtxt_name_hint">Task title</string>
     <string name="editor_txt_description">Description</string>
     <string name="editor_edtxt_description_hint">Task description</string>
-    <string name="editor_btn_date">DATE</string>
+    <string name="editor_btn_date">Set date</string>
+    <string name="editor_switch">Add notify</string>
     <string name="editor_btn_time">TIME</string>
     <string name="snackbar">%s removed from list!</string>
     <string name="undo">UNDO</string>

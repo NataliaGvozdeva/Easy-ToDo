@@ -1,6 +1,5 @@
 package com.haraevanton.tasks09.mvp.presenters;
 
-import android.util.Log;
 import android.widget.ImageButton;
 
 import com.arellomobile.mvp.InjectViewState;
@@ -39,11 +38,11 @@ public class MainActivityPresenter extends MvpPresenter<MainActivityView> {
 
     public void onTaskNameClick(Task editedTask) {
         currentTaskStatus = editedTask.getTaskStatus();
-        if (this.editedTask != null){
+        if (this.editedTask != null) {
             if (!this.editedTask.getId().equals(editedTask.getId())) {
                 this.editedTask = editedTask;
             }
-        }else {
+        } else {
             this.editedTask = editedTask;
         }
 
@@ -61,17 +60,18 @@ public class MainActivityPresenter extends MvpPresenter<MainActivityView> {
             editedTask.setTaskDescription(taskDescription);
             editedTask.setTaskStatus(currentTaskStatus);
             editedTask.setSwitched(isSwitched);
-            if (isSwitched){
-                editedTask.setNotifyDate(notifyCalendar);
+            editedTask.setNotifyDate(notifyCalendar);
+            if (isSwitched && (Calendar.getInstance().compareTo(editedTask.getNotifyDate()) < 0)) {
                 getViewState().setNotification(editedTask);
             } else {
-                editedTask.setNotifyDate(Calendar.getInstance());
                 getViewState().cancelNotification(editedTask);
             }
             if (!taskRepository.isHaveTask(editedTask.getId())) {
                 taskRepository.addTask(editedTask);
+                getViewState().updateWidget();
             } else {
                 taskRepository.updateTask(taskRepository.getTask(editedTask.getId()));
+                getViewState().updateWidget();
             }
         }
     }
@@ -80,11 +80,16 @@ public class MainActivityPresenter extends MvpPresenter<MainActivityView> {
         getViewState().showEmptyEditor();
     }
 
-    public void removeTask(String id){
+    public void removeTask(String id) {
+        getViewState().cancelNotification(taskRepository.getTask(id));
         taskRepository.removeTask(taskRepository.getTask(id));
+        getViewState().updateWidget();
     }
 
-    public void addTask(int position, Task task){
+    public void addTask(int position, Task task) {
+        getViewState().setNotification(task);
         taskRepository.refreshTasks(position, task);
+        getViewState().updateWidget();
     }
+
 }
