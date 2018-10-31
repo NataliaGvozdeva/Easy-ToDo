@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">Tasks09</string>
+
+    <!--activity_main-->
+    <string name="editor_txt_title">Заголовок</string>
+    <string name="editor_edtxt_name_hint">Заголовок задачи</string>
+    <string name="editor_txt_description">Описание</string>
+    <string name="editor_edtxt_description_hint">Описание задачи</string>
+    <string name="editor_btn_date">Установить дату</string>
+    <string name="editor_switch">Добавить уведомление</string>
+    <string name="snackbar">%s удален из списка!</string>
+    <string name="undo">Вернуть</string>
+    <string name="notification">Напоминание</string>
+
+    <!--cardview-->
+    <string name="background_txt_delete">УДАЛИТЬ</string>
+
+</resources>

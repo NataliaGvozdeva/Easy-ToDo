@@ -3,7 +3,6 @@ package com.haraevanton.tasks09.room;
 import android.arch.persistence.room.TypeConverter;
 
 import java.util.Calendar;
-import java.util.Date;
 
 public class DateConverter {
 

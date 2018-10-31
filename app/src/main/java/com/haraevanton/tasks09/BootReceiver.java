@@ -22,7 +22,7 @@ public class BootReceiver extends BroadcastReceiver {
         for (Task task : tasks) {
             if ((task.isSwitched()) && (Calendar.getInstance().compareTo(task.getNotifyDate()) < 0)) {
                 Notification.Builder builder = new Notification.Builder(context);
-                builder.setContentTitle("Remainder");
+                builder.setContentTitle(context.getString(R.string.notification));
                 builder.setContentText(task.getTaskName());
                 builder.setSmallIcon(R.drawable.ic_task_active);
                 builder.setContentIntent(PendingIntent.getActivity(context, 0,

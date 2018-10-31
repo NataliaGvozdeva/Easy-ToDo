@@ -18,7 +18,6 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -90,6 +89,7 @@ public class MainActivity extends MvpAppCompatActivity implements MainActivityVi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
 
         rv.setLayoutManager(new LinearLayoutManager(this));
 
@@ -168,7 +168,7 @@ public class MainActivity extends MvpAppCompatActivity implements MainActivityVi
     @Override
     public void setNotification(Task task) {
         Notification.Builder builder = new Notification.Builder(this);
-        builder.setContentTitle("Remainder");
+        builder.setContentTitle(getString(R.string.notification));
         builder.setContentText(task.getTaskName());
         builder.setSmallIcon(R.drawable.ic_task_active);
         builder.setContentIntent(PendingIntent.getActivity(this, 0, new Intent(this, MainActivity.class), PendingIntent.FLAG_UPDATE_CURRENT));
@@ -284,26 +284,22 @@ public class MainActivity extends MvpAppCompatActivity implements MainActivityVi
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
         if (viewHolder instanceof MainAdapter.TaskViewHolder) {
-            try {
-                String name = TaskRepository.get().getTasks().get(viewHolder.getAdapterPosition()).getTaskName();
-                final Task deletedItem = TaskRepository.get().getTasks().get(viewHolder.getAdapterPosition());
-                final int deletedIndex = viewHolder.getAdapterPosition();
+            String name = TaskRepository.get().getTasks().get(viewHolder.getAdapterPosition()).getTaskName();
+            final Task deletedItem = TaskRepository.get().getTasks().get(viewHolder.getAdapterPosition());
+            final int deletedIndex = viewHolder.getAdapterPosition();
 
-                adapter.removeItem(viewHolder.getAdapterPosition());
+            adapter.removeItem(viewHolder.getAdapterPosition());
 
-                Snackbar snackbar = Snackbar.make(coordinatorLayout, getString(R.string.snackbar, name), Snackbar.LENGTH_LONG);
-                snackbar.setAction(getString(R.string.undo), new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
+            Snackbar snackbar = Snackbar.make(coordinatorLayout, getString(R.string.snackbar, name), Snackbar.LENGTH_LONG);
+            snackbar.setAction(getString(R.string.undo), new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
 
-                        adapter.restoreItem(deletedItem, deletedIndex);
-                    }
-                });
-                snackbar.setActionTextColor(Color.YELLOW);
-                snackbar.show();
-            } catch (Exception e) {
-                Log.i("ExceptionSwiped", e.toString());
-            }
+                    adapter.restoreItem(deletedItem, deletedIndex);
+                }
+            });
+            snackbar.setActionTextColor(Color.YELLOW);
+            snackbar.show();
         }
     }
 }

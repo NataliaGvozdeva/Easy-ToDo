@@ -4,6 +4,7 @@ import android.widget.ImageButton;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
+import com.haraevanton.tasks09.App;
 import com.haraevanton.tasks09.R;
 import com.haraevanton.tasks09.room.Task;
 import com.haraevanton.tasks09.mvp.model.TaskRepository;
@@ -11,17 +12,21 @@ import com.haraevanton.tasks09.mvp.views.MainActivityView;
 
 import java.util.Calendar;
 
+import javax.inject.Inject;
+
 @InjectViewState
 public class MainActivityPresenter extends MvpPresenter<MainActivityView> {
 
+    @Inject
+    TaskRepository taskRepository;
+
     private Task editedTask;
     private int currentTaskStatus;
-    private TaskRepository taskRepository;
 
     public MainActivityPresenter() {
 
+        App.getComponent().injectPresenter(this);
 
-        taskRepository = TaskRepository.get();
         getViewState().onGetDataSuccess(taskRepository.getTasks());
 
     }
@@ -87,7 +92,9 @@ public class MainActivityPresenter extends MvpPresenter<MainActivityView> {
     }
 
     public void addTask(int position, Task task) {
-        getViewState().setNotification(task);
+        if (task.isSwitched() && (Calendar.getInstance().compareTo(task.getNotifyDate()) < 0)) {
+            getViewState().setNotification(task);
+        }
         taskRepository.refreshTasks(position, task);
         getViewState().updateWidget();
     }

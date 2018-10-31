@@ -2,7 +2,6 @@ package com.haraevanton.tasks09.ui.adapter;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +14,6 @@ import com.haraevanton.tasks09.room.Task;
 import com.haraevanton.tasks09.mvp.presenters.MainActivityPresenter;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
@@ -116,7 +114,6 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.TaskViewHolder
             for (Task task : tasks) {
                 if (taskName.getText().equals(task.getTaskName())){
                     mainActivityPresenter.onTaskNameClick(task);
-                    Log.i("task1", "onTaskNameCLick");
                 }
             }
         }

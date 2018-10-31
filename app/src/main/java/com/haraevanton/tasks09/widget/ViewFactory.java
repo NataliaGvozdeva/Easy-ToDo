@@ -2,7 +2,6 @@ package com.haraevanton.tasks09.widget;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
@@ -12,7 +11,6 @@ import com.haraevanton.tasks09.room.Task;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
@@ -59,7 +57,6 @@ public class ViewFactory implements RemoteViewsService.RemoteViewsFactory {
         Intent clickIntent = new Intent();
         clickIntent.putExtra(WidgetProvider.ITEM_POSITION, i);
         remoteViews.setOnClickFillInIntent(R.id.widget_item_title, clickIntent);
-        Log.i("widgetSetTitle", tasks.get(0).getTaskName());
         return remoteViews;
     }
 

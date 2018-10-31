@@ -1,7 +1,6 @@
 <resources>
     <string name="app_name">Tasks09</string>
 
-
     <!--activity_main-->
     <string name="editor_txt_title">Title</string>
     <string name="editor_edtxt_name_hint">Task title</string>
@@ -9,9 +8,9 @@
     <string name="editor_edtxt_description_hint">Task description</string>
     <string name="editor_btn_date">Set date</string>
     <string name="editor_switch">Add notify</string>
-    <string name="editor_btn_time">TIME</string>
     <string name="snackbar">%s removed from list!</string>
     <string name="undo">UNDO</string>
+    <string name="notification">Remainder</string>
 
     <!--cardview-->
     <string name="background_txt_delete">DELETE</string>
