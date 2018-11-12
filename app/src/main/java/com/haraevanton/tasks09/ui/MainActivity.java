@@ -105,7 +105,7 @@ public class MainActivity extends MvpAppCompatActivity implements MainActivityVi
             Intent i = new Intent(MainActivity.this, IntroActivity.class);
             startActivity(i);
             SharedPreferences.Editor e = getSharedPreferences.edit();
-            e.putBoolean("firstStart", true);
+            e.putBoolean("firstStart", false);
             e.apply();
         }
 
