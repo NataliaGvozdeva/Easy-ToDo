@@ -15,4 +15,14 @@
     <!--cardview-->
     <string name="background_txt_delete">УДАЛИТЬ</string>
 
+    <!--intro-->
+    <string name="slider1_title">Добро пожаловать в Task09</string>
+    <string name="slider1_description">Простой менеджер задач с удобными функциями.</string>
+    <string name="slider2_title">Добавляйте задачи</string>
+    <string name="slider2_description">Добавляйте новые задачи с уведомлениями.</string>
+    <string name="slider3_title">Удаляйте задачи</string>
+    <string name="slider3_description">Удаляйте задачи в одно движение.</string>
+    <string name="slider4_title">Используйте виджет</string>
+    <string name="slider4_description">Современный виджет для просмотра задач прямо на рабочем столе.</string>
+
 </resources>
