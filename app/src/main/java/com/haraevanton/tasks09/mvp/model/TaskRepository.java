@@ -43,6 +43,10 @@ public class TaskRepository {
         tasks.add(0, t);
     }
 
+    public void addTask(Task t, int position) {
+        tasks.add(position, t);
+    }
+
     public void updateTask(Task t) {
         db.taskDao().update(t);
     }
@@ -52,8 +56,7 @@ public class TaskRepository {
         tasks.remove(t);
     }
 
-    public void refreshTasks(int position, Task task){
-        tasks.add(position, task);
+    public void refreshTasks(){
         db.taskDao().deleteAll();
         Collections.reverse(tasks);
         for (Task t : tasks){

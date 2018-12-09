@@ -20,8 +20,8 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.View;
-import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
@@ -45,6 +45,7 @@ import com.haraevanton.tasks09.widget.WidgetProvider;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
@@ -109,7 +110,6 @@ public class MainActivity extends MvpAppCompatActivity implements MainActivityVi
             e.apply();
         }
 
-
         rv.setLayoutManager(new LinearLayoutManager(this));
 
         rv.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -136,8 +136,11 @@ public class MainActivity extends MvpAppCompatActivity implements MainActivityVi
     public void onGetDataSuccess(List<Task> tasks) {
         adapter = new MainAdapter(tasks, mainActivityPresenter);
         rv.setAdapter(adapter);
-        ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new RecyclerItemTouchHelper(0, ItemTouchHelper.LEFT, this);
+        ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new RecyclerItemTouchHelper(ItemTouchHelper.UP | ItemTouchHelper.DOWN, ItemTouchHelper.LEFT, this);
         new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(rv);
+
+        Log.i("startVisiblegone", String.valueOf(View.GONE));
+        Log.i("startVisible", String.valueOf(relativeLayout.getVisibility()));
     }
 
     @Override
@@ -163,6 +166,7 @@ public class MainActivity extends MvpAppCompatActivity implements MainActivityVi
 
         }
         relativeLayout.setVisibility(View.VISIBLE);
+        Log.i("startVisible1", String.valueOf(relativeLayout.getVisibility()));
         btnApply.setVisibility(View.VISIBLE);
         btnCancel.setVisibility(View.VISIBLE);
 
@@ -189,7 +193,7 @@ public class MainActivity extends MvpAppCompatActivity implements MainActivityVi
         Notification.Builder builder = new Notification.Builder(this);
         builder.setContentTitle(getString(R.string.notification));
         builder.setContentText(task.getTaskName());
-        builder.setSmallIcon(R.drawable.ic_task_active);
+        builder.setSmallIcon(task.getTaskStatus());
         builder.setContentIntent(PendingIntent.getActivity(this, 0, new Intent(this, MainActivity.class), PendingIntent.FLAG_UPDATE_CURRENT));
         Intent notificationIntent = new Intent(this, NotificationPublisher.class);
         notificationIntent.putExtra(NotificationPublisher.NOTIFICATION_ID, task.getId().hashCode());
@@ -320,5 +324,10 @@ public class MainActivity extends MvpAppCompatActivity implements MainActivityVi
             snackbar.setActionTextColor(Color.YELLOW);
             snackbar.show();
         }
+    }
+
+    @Override
+    public void onMoved(int fromPos, int toPos) {
+        adapter.moveItem(fromPos, toPos);
     }
 }

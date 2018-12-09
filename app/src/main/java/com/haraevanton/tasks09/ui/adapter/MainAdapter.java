@@ -2,6 +2,7 @@ package com.haraevanton.tasks09.ui.adapter;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,8 +66,13 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.TaskViewHolder
     }
 
     public void restoreItem(Task task, int position){
-        mainActivityPresenter.addTask(position, task);
+        mainActivityPresenter.restoreTask(position, task);
         notifyItemInserted(position);
+    }
+
+    public void moveItem(int fromPos, int toPos){
+        mainActivityPresenter.moveTask(fromPos, toPos);
+        notifyItemMoved(fromPos, toPos);
     }
 
     public static class TaskViewHolder extends RecyclerView.ViewHolder {
@@ -114,6 +120,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.TaskViewHolder
             for (Task task : tasks) {
                 if (taskName.getText().equals(task.getTaskName())){
                     mainActivityPresenter.onTaskNameClick(task);
+                    Log.i("startVisible", "hello im down");
                 }
             }
         }

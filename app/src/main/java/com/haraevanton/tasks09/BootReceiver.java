@@ -24,7 +24,7 @@ public class BootReceiver extends BroadcastReceiver {
                 Notification.Builder builder = new Notification.Builder(context);
                 builder.setContentTitle(context.getString(R.string.notification));
                 builder.setContentText(task.getTaskName());
-                builder.setSmallIcon(R.drawable.ic_task_active);
+                builder.setSmallIcon(task.getTaskStatus());
                 builder.setContentIntent(PendingIntent.getActivity(context, 0,
                         new Intent(context, MainActivity.class), PendingIntent.FLAG_UPDATE_CURRENT));
                 Intent notificationIntent = new Intent(context, NotificationPublisher.class);

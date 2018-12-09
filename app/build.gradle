@@ -42,12 +42,12 @@ dependencies {
     // Room
     implementation "android.arch.persistence.room:runtime:1.1.1"
     annotationProcessor "android.arch.persistence.room:compiler:1.1.1"
+    implementation "android.arch.persistence.room:rxjava2:1.1.1"
 
     // Dagger
     implementation 'com.google.dagger:dagger:2.16'
     annotationProcessor 'com.google.dagger:dagger-compiler:2.16'
 
     // AppIntro
-//    implementation 'com.github.paolorotolo:appintro:4.1.0'
     implementation 'com.github.paolorotolo:appintro:4.1.0'
 }

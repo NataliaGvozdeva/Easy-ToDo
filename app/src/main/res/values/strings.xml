@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Tasks09</string>
+    <string name="app_name">Easy ToDo</string>
 
     <!--activity_main-->
     <string name="editor_txt_title">Title</string>

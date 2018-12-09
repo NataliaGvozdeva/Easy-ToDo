@@ -1,5 +1,6 @@
 package com.haraevanton.tasks09.mvp.presenters;
 
+import android.util.Log;
 import android.widget.ImageButton;
 
 import com.arellomobile.mvp.InjectViewState;
@@ -11,6 +12,7 @@ import com.haraevanton.tasks09.mvp.model.TaskRepository;
 import com.haraevanton.tasks09.mvp.views.MainActivityView;
 
 import java.util.Calendar;
+import java.util.Collections;
 
 import javax.inject.Inject;
 
@@ -51,6 +53,7 @@ public class MainActivityPresenter extends MvpPresenter<MainActivityView> {
             this.editedTask = editedTask;
         }
 
+        Log.i("startVisible", "hello im up");
         getViewState().showTaskEditor(editedTask);
     }
 
@@ -91,12 +94,27 @@ public class MainActivityPresenter extends MvpPresenter<MainActivityView> {
         getViewState().updateWidget();
     }
 
-    public void addTask(int position, Task task) {
+    public void restoreTask(int position, Task task) {
         if (task.isSwitched() && (Calendar.getInstance().compareTo(task.getNotifyDate()) < 0)) {
             getViewState().setNotification(task);
         }
-        taskRepository.refreshTasks(position, task);
+        taskRepository.addTask(task, position);
+        taskRepository.refreshTasks();
         getViewState().updateWidget();
+    }
+
+    public void moveTask(int fromPos, int toPos){
+        if (fromPos < toPos) {
+            for (int i = fromPos; i < toPos; i++) {
+                Collections.swap(TaskRepository.get().getTasks(), i, i + 1);
+            }
+        } else {
+            for (int i = fromPos; i > toPos; i--) {
+                Collections.swap(TaskRepository.get().getTasks(), i, i - 1);
+            }
+        }
+
+        taskRepository.refreshTasks();
     }
 
 }
