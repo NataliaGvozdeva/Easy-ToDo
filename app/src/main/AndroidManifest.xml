@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.haraevanton.tasks09">
+    package="com.haraevanton.easytodo">
 
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
-        android:name=".App"
-        android:allowBackup="true"
+        android:name="com.haraevanton.easytodo.App"
+        android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
@@ -16,7 +16,7 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
-            android:name=".ui.MainActivity"
+            android:name="com.haraevanton.easytodo.ui.MainActivity"
             android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,16 +25,16 @@
         </activity>
 
         <activity
-            android:name=".ui.IntroActivity"
+            android:name="com.haraevanton.easytodo.ui.IntroActivity"
             android:theme="@style/FullscreenTheme">
 
         </activity>
 
         <service
-            android:name=".widget.WidgetService"
+            android:name="com.haraevanton.easytodo.widget.WidgetService"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
 
-        <receiver android:name=".widget.WidgetProvider">
+        <receiver android:name="com.haraevanton.easytodo.widget.WidgetProvider">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -43,8 +43,8 @@
                 android:resource="@xml/widget_metadata" />
         </receiver>
 
-        <receiver android:name=".NotificationPublisher" />
-        <receiver android:name=".BootReceiver">
+        <receiver android:name="com.haraevanton.easytodo.NotificationPublisher" />
+        <receiver android:name="com.haraevanton.easytodo.BootReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>

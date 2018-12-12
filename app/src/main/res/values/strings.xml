@@ -16,7 +16,7 @@
     <string name="background_txt_delete">DELETE</string>
 
     <!--intro-->
-    <string name="slider1_title">Welcome to Task09</string>
+    <string name="slider1_title">Welcome to Easy ToDo</string>
     <string name="slider1_description">Simple ToDo android app with convenient features.</string>
     <string name="slider2_title">Add tasks</string>
     <string name="slider2_description">Use add button to add new task with notification.</string>
