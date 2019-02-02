@@ -3,7 +3,7 @@ Easy ToDo - простой и удобный менеджер задач, кот
 
 ## Screenshots
 
-<img src="../master/app/release/app_intro.png" width="250"> <img src="../master/app/release/main_screen.jpg" width="250"> <img src="../master/app/release/add_task.jpg" width="250"> <img src="../master/app/release/widget.png" width="250">
+<img src="../master/app/release/app_intro.png" width="250"> <img src="../master/app/release/main_screen.png" width="250"> <img src="../master/app/release/add_task.png" width="250"> <img src="../master/app/release/widget.png" width="250">
 
 ## Using  libraries
 
