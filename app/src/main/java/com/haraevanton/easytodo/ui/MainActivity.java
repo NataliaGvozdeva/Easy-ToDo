@@ -12,6 +12,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
@@ -59,6 +60,7 @@ public class MainActivity extends MvpAppCompatActivity implements MainActivityVi
         RecyclerItemTouchHelper.RecyclerItemTouchHelperListener {
 
     public static final String FIRST_START = "first_start";
+    public static final String MAIN_CHANNEL_ID = "com.haraevanton.easytodo.MAIN_CHANNEL";
 
     @InjectPresenter
     MainActivityPresenter mainActivityPresenter;
@@ -193,14 +195,19 @@ public class MainActivity extends MvpAppCompatActivity implements MainActivityVi
 
     @Override
     public void setNotification(Task task) {
-        Notification.Builder builder = new Notification.Builder(this);
+        Notification.Builder builder = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            builder = new Notification.Builder(this, MAIN_CHANNEL_ID);
+        } else {
+            builder = new Notification.Builder(this);
+        }
         builder.setContentTitle(getString(R.string.notification));
         builder.setContentText(task.getTaskName());
         builder.setSmallIcon(task.getTaskStatus());
-        builder.setContentIntent(PendingIntent.getActivity(this,
-                0,
+        builder.setContentIntent(PendingIntent.getActivity(this, 0,
                 new Intent(this, MainActivity.class),
                 PendingIntent.FLAG_UPDATE_CURRENT));
+
         Intent notificationIntent = new Intent(this, NotificationPublisher.class);
         notificationIntent.putExtra(NotificationPublisher.NOTIFICATION_ID, task.getId().hashCode());
         notificationIntent.putExtra(NotificationPublisher.NOTIFICATION, builder.build());
